@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Student List</h2>
+<form method="GET" class="mb-3">
+
+    <input
+        type="text"
+        name="q"
+        value="{{ request.GET.q }}"
+        placeholder="Search student..."
+        class="form-control"
+    >
+
+    <br>
+
+    <button class="btn btn-primary">
+        Search
+    </button>
+
+</form>
+
+<table class="table table-bordered table-striped">
+
+<tr>
+    <th>Name</th>
+    <th>Roll No</th>
+    <th>Course</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Actions</th>
+</tr>
+
+{% for student in page_obj %}
+
+<tr>
+    <td>{{ student.name }}</td>
+    <td>{{ student.roll_no }}</td>
+    <td>{{ student.course }}</td>
+    <td>{{ student.email }}</td>
+    <td>{{ student.phone }}</td>
+    <td>
+        <a href="{% url 'update_student' student.id %}" class="btn btn-warning btn-sm">Edit</a> |
+        <a href="{% url 'delete_student' student.id %}" class="btn btn-danger btn-sm">Delete</a>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+<nav>
+    <ul class="pagination">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.previous_page_number }}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                {{ page_obj.number }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.next_page_number }}">
+                Next
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+
+{% endblock %}
